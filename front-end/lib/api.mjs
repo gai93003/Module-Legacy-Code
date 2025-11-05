@@ -138,6 +138,7 @@ async function signup(username, password) {
 
 function logout() {
   state.destroyState();
+  window.location.hash = "/";
   return {success: true};
 }
 
