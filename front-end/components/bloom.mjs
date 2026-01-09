@@ -1,3 +1,5 @@
+import {apiService, state} from "../index.mjs";
+
 /**
  * Create a bloom component
  * @param {string} template - The ID of the template to clone
@@ -7,7 +9,8 @@
  * {"id": Number,
  * "sender": username,
  * "content": "string from textarea",
- * "sent_timestamp": "datetime as ISO 8601 formatted string"}
+ * "sent_timestamp": "datetime as ISO 8601 formatted string",
+ * "original_bloom_id": Number or null}
 
  */
 const createBloom = (template, bloom) => {
@@ -20,6 +23,14 @@ const createBloom = (template, bloom) => {
   const bloomTime = bloomFrag.querySelector("[data-time]");
   const bloomTimeLink = bloomFrag.querySelector("a:has(> [data-time])");
   const bloomContent = bloomFrag.querySelector("[data-content]");
+  const rebloomSymbol = bloomFrag.querySelector("[data-rebloom-symbol]");
+  const originalAuthorInfo = bloomFrag.querySelector("[data-original-author-info]");
+  const originalAuthorLink = bloomFrag.querySelector("[data-original-author-link]");
+  const rebloomBadge = bloomFrag.querySelector("[data-rebloom-badge]");
+  const rebloomerEl = bloomFrag.querySelector("[data-rebloomer]");
+  const rebloomCountBadge = bloomFrag.querySelector("[data-rebloom-count-badge]");
+  const rebloomCountEl = bloomFrag.querySelector("[data-rebloom-count]");
+  const rebloomBtn = bloomFrag.querySelector("[data-action='rebloom']");
 
   bloomArticle.setAttribute("data-bloom-id", bloom.id);
   bloomUsername.setAttribute("href", `/profile/${bloom.sender}`);
@@ -30,6 +41,40 @@ const createBloom = (template, bloom) => {
     ...bloomParser.parseFromString(_formatHashtags(bloom.content), "text/html")
       .body.childNodes
   );
+
+  // Show rebloom metadata
+  const isRebloom = Boolean(bloom.original_bloom_id);
+  const hasRebloomCount = Number(bloom.rebloom_count) > 0;
+
+  if (isRebloom) {
+    bloomArticle.classList.add("bloom--rebloom");
+    // rebloomSymbol.style.display = "inline";
+    rebloomBadge.style.display = "block";
+    if (rebloomerEl) rebloomerEl.textContent = bloom.sender;
+    
+    // Show original author
+    if (originalAuthorInfo && originalAuthorLink && bloom.original_sender) {
+      originalAuthorInfo.style.display = "block";
+      originalAuthorLink.textContent = bloom.original_sender;
+      originalAuthorLink.setAttribute("href", `/profile/${bloom.original_sender}`);
+    }
+  }
+
+  if (hasRebloomCount && rebloomCountBadge && rebloomCountEl) {
+    rebloomCountBadge.style.display = "inline";
+    rebloomCountEl.textContent = String(bloom.rebloom_count);
+  }
+
+  // Wire up rebloom button
+  if (rebloomBtn) {
+    rebloomBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (state.isLoggedIn) {
+        const targetId = bloom.original_bloom_id || bloom.id;
+        await apiService.postRebloom(targetId);
+      }
+    });
+  }
 
   return bloomFrag;
 };

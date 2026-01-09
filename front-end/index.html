@@ -235,10 +235,27 @@
     <template id="bloom-template">
       <article class="bloom box" data-bloom data-bloom-id="">
         <div class="bloom__header flex">
-          <a href="#" class="bloom__username" data-username>Username</a>
+          <div class="bloom__user-info">
+            <div class="bloom__username-line flex" style="align-items: center; gap: 0.5em;">
+              <!-- <span data-rebloom-symbol style="display: none; font-size: 1.2em;">🔁</span> -->
+              <a href="#" class="bloom__username" data-username>Username</a>
+            </div>
+            <div class="bloom__original-author" data-original-author-info style="display: none; font-size: 0.85em; color: #999; margin-top: 0.25em;">
+              Originally by <a href="#" class="bloom__original-author-link" data-original-author-link style="color: #999;"></a>
+            </div>
+          </div>
           <a href="#" class="bloom__time"><time class="bloom__time" data-time>2m</time></a>
         </div>
+        <div class="bloom__rebloom-badge" data-rebloom-badge style="display: none; margin-bottom: 0.5em;">
+          <span data-rebloomed-by>🔁 Rebloomed by <span data-rebloomer></span></span>
+          <!-- <span data-rebloom-count-badge style="display: none; margin-left: 1em;">(<span data-rebloom-count></span> total reblooms)</span> -->
+        </div>
         <div class="bloom__content" data-content></div>
+        <div class="bloom__actions" style="margin-top: 0.5em;">
+          <button class="bloom__rebloom-btn" data-action="rebloom" style="background: none; border: none; cursor: pointer; font-size: 0.9em; color: #e4e6e7;">
+            🔁 Rebloom
+          </button>
+        </div>
       </article>
     </template>
 

@@ -239,6 +239,36 @@ dialog {
   display: grid;
   gap: var(--space);
 }
+
+.bloom--rebloom {
+  border-left: 5px solid var(--brand);
+  background: hsl(var(--key), 45%, 85%);
+}
+
+.bloom__user-info {
+  flex: 1;
+}
+
+.bloom__original-author {
+  font-style: italic;
+}
+
+.bloom__original-author-link {
+  color: inherit !important;
+  text-decoration: underline;
+}
+
+.bloom__rebloom-badge {
+  background: hsl(var(--key), 60%, 70%);
+  color: var(--ink);
+  font-weight: 700;
+  padding: calc(var(--space) / 2);
+  border-radius: var(--corner);
+  font-size: 0.95em;
+  margin: 0 calc(var(--space) * -1) 0 calc(var(--space) * -1);
+  padding-left: var(--space);
+  padding-right: var(--space);
+}
 .is-invisible {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
