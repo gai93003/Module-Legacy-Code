@@ -21,7 +21,6 @@ const getHeadingContainer = () => document.getElementById("heading-container");
  * - Handle the current route based on URL
  * - Set up state change listeners
  */
-let currentRoute = window.location.hash;
 
 async function init() {
   const path = window.location.pathname;
@@ -43,12 +42,9 @@ async function init() {
   handleRouteChange();
 
   document.addEventListener("state-change", () => {
-    const newRoute = window.location.hash;
-    if (newRoute !== currentRoute) {
-      currentRoute = newRoute;
-      handleRouteChange();
-    }
+    handleRouteChange();
   });
+  
 }
 
 // TODO Check any unhandled errors bubble up to this central handler
